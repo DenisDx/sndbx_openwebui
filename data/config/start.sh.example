@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Optional Open WebUI startup override. Copy this file to start.sh (chmod 0750)
+# to replace the default server command, for example to add a reverse proxy.
+# The default command is:
+#
+#   cd /app/backend
+#   exec bash start.sh
+set -Eeuo pipefail
+
+cd /app/backend
+exec bash start.sh
