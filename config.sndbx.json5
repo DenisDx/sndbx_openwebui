@@ -1,5 +1,5 @@
 // Merge this template into the root sndbx config and set WEBUI_HOST_ROOT to the
-// absolute path of this checkout (e.g. /home/denis/sndbx/images/open-webui).
+// absolute path of this checkout (e.g. /path/to/sndbx/images/open-webui).
 {
   sandboxes: {
     items: {

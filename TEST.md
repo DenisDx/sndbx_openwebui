@@ -46,12 +46,13 @@ ls -ln data | head
 Expected: the app runs as the configured `WEBUI_UID:WEBUI_GID` and files created
 under `data/` are owned by that UID/GID.
 
-## aidir integration
+## External service integration
 
 ```bash
-curl -s -o /dev/null -w '%{http_code}\n' "${AIDIR_BASE_URL}/health"
-curl -s "${AIDIR_BASE_URL}/v1/models" | head
+curl -s -o /dev/null -w '%{http_code}\n' "${EXTERNAL_API_BASE_URL}/health"
+curl -s "${EXTERNAL_API_BASE_URL}/v1/models" | head
 ```
 
 Expected: the health check and the OpenAI-compatible models list succeed from
-inside the VM, and the aidir connection appears under Settings -> Connections.
+inside the VM, and the external-service connection appears under
+Settings -> Connections.

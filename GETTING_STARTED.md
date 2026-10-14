@@ -5,12 +5,12 @@
 ```bash
 cp .env.example .env
 chmod 0600 .env
-# set WEBUI_UID/GID to your user, WEBUI_SECRET_KEY, and AIDIR_BASE_URL
+# set WEBUI_UID/GID to your user, WEBUI_SECRET_KEY, and EXTERNAL_API_BASE_URL
 ./install.sh
 ```
 
 Open `http://localhost:<published-ui-port>/`, create the admin account, and use
-the preconfigured aidir connection.
+the preconfigured external-service connection.
 
 ## sndbx
 
@@ -24,7 +24,7 @@ Merge `config.sndbx.json5` into the root `sndbx` configuration, set
 
 ## External services
 
-Set `AIDIR_BASE_URL` in `.env` to the address of the aidir service. The launcher
+Set `EXTERNAL_API_BASE_URL` in `.env` to the address of the external service. The launcher
 publishes it to Open WebUI as both an OpenAI-compatible endpoint (`<base>/v1`)
-and an Ollama-compatible endpoint (`<base>`). Set `AIDIR_API_KEY` only when the
+and an Ollama-compatible endpoint (`<base>`). Set `EXTERNAL_API_KEY` only when the
 service requires a bearer token.

@@ -26,7 +26,7 @@ main() {
     "${script_dir}/deploy.sh"
     printf '\nOpen WebUI is starting at http://localhost:%s\n' \
         "$(sed -n 's/^WEBUI_HOST_PORT=//p' "${environment_file}" | head -n1)"
-    printf 'Set AIDIR_BASE_URL in .env to the external service address before use.\n'
+    printf 'Set EXTERNAL_API_BASE_URL in .env to the external service address before use.\n'
     docker compose --project-directory "${script_dir}" logs --tail 20 "${service_name}" || true
 }
 
