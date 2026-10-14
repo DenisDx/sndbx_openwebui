@@ -1,5 +1,5 @@
-// Merge this template into the root sndbx config and set WEBUI_HOST_ROOT to the
-// absolute path of this checkout (e.g. /path/to/sndbx/images/open-webui).
+// Merge this template into the root sndbx config. It uses SNDBX_ROOT for this
+// checkout's persistent data and OPEN_WEBUI_* settings to avoid root port conflicts.
 {
   sandboxes: {
     items: {
@@ -7,9 +7,9 @@
         title: "Open WebUI front end",
         image: "open-webui:latest",
         local_image_id: "open-webui",
-        memory: "${WEBUI_MEMORY:-4G}",
-        cpus: ${WEBUI_CPUS:-2},
-        disk_max: "${WEBUI_DISK_MAX:-20G}",
+        memory: "${OPEN_WEBUI_MEMORY:-4G}",
+        cpus: ${OPEN_WEBUI_CPUS:-2},
+        disk_max: "${OPEN_WEBUI_DISK_MAX:-20G}",
         persistent: true,
         run_at_startup: false,
         configure_apt_mirror: false,
@@ -19,9 +19,17 @@
         runtime_contract: {
           version: 1,
           environment: {
-            WEBUI_BIND_HOST: "${WEBUI_BIND_HOST:-0.0.0.0}",
-            WEBUI_PORT: "${WEBUI_PORT:-8080}",
+            WEBUI_BIND_HOST: "${OPEN_WEBUI_BIND_HOST:-0.0.0.0}",
+            WEBUI_PORT: "${OPEN_WEBUI_PORT:-8080}",
           },
+          readiness: [
+            {
+              type: "http",
+              url: "http://127.0.0.1:${OPEN_WEBUI_HOST_PORT:-15080}/health",
+              attempts: 90,
+              interval_seconds: 1,
+            },
+          ],
         },
         tmpfs: [
           "/tmp:rw,size=512m",
@@ -29,7 +37,7 @@
         ],
         shared_directories: [
           {
-            host_path: "${WEBUI_HOST_ROOT}/data",
+            host_path: "${SNDBX_ROOT}/images/open-webui/data",
             guest_path: "/app/backend/data",
             mount_type: "dir",
             source_type: "directory",
@@ -38,7 +46,7 @@
             create_if_missing: true,
           },
           {
-            host_path: "${WEBUI_HOST_ROOT}/.env",
+            host_path: "${SNDBX_ROOT}/images/open-webui/.env",
             guest_path: "/app/backend/data/.env",
             mount_type: "file",
             source_type: "file",
@@ -48,14 +56,14 @@
         ],
         port_bindings: [
           {
-            bind_host: "${WEBUI_SSH_BIND_HOST:-0.0.0.0}",
+            bind_host: "${OPEN_WEBUI_SSH_BIND_HOST:-0.0.0.0}",
             vm_port: 22,
-            publish_port: ${WEBUI_SSH_HOST_PORT:-15021},
+            publish_port: ${OPEN_WEBUI_SSH_HOST_PORT:-15021},
           },
           {
-            bind_host: "${WEBUI_BIND_HOST:-0.0.0.0}",
+            bind_host: "${OPEN_WEBUI_BIND_HOST:-0.0.0.0}",
             vm_port: 8080,
-            publish_port: ${WEBUI_HOST_PORT:-15080},
+            publish_port: ${OPEN_WEBUI_HOST_PORT:-15080},
           },
         ],
       },
