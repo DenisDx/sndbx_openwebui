@@ -1,0 +1,74 @@
+// sndbx per-image overlay generated from the root config.
+// Sandbox ids: open-webui
+// These are VM defaults. The root config wins every conflict; a root
+// array replaces this list entirely. run_at_startup is owned by the root.
+{
+  "sandboxes": {
+    "items": {
+      "open-webui": {
+        "title": "Open WebUI front end",
+        "image": "open-webui:latest",
+        "local_image_id": "open-webui",
+        "memory": "${OPEN_WEBUI_MEMORY:-4G}",
+        "cpus": ${OPEN_WEBUI_CPUS:-2},
+        "disk_max": "${OPEN_WEBUI_DISK_MAX:-20G}",
+        "network_traffic_max": "${OPEN_WEBUI_NETWORK_TRAFFIC_MAX:-100G}",
+        "persistent": true,
+        "configure_apt_mirror": false,
+        "ssh_keys": [],
+        "ssh_user": "openwebui",
+        "ssh_setup_via_image_hook": true,
+        "runtime_contract": {
+          "version": 1,
+          "environment": {
+            "WEBUI_BIND_HOST": "${OPEN_WEBUI_BIND_HOST:-0.0.0.0}",
+            "WEBUI_PORT": "${OPEN_WEBUI_PORT:-8080}"
+          },
+          "readiness": [
+            {
+              "type": "http",
+              "url": "http://127.0.0.1:${OPEN_WEBUI_HOST_PORT:-15080}/health",
+              "attempts": 90,
+              "interval_seconds": 1
+            }
+          ]
+        },
+        "tmpfs": [
+          "/tmp:rw,size=512m",
+          "/run:rw,size=64m"
+        ],
+        "shared_directories": [
+          {
+            "host_path": "${SNDBX_ROOT}/images/open-webui/data",
+            "guest_path": "/app/backend/data",
+            "mount_type": "dir",
+            "source_type": "directory",
+            "permission": "rw",
+            "required": true,
+            "create_if_missing": true
+          },
+          {
+            "host_path": "${SNDBX_ROOT}/images/open-webui/.env",
+            "guest_path": "/app/backend/data/.env",
+            "mount_type": "file",
+            "source_type": "file",
+            "permission": "ro",
+            "required": false
+          }
+        ],
+        "port_bindings": [
+          {
+            "bind_host": "${OPEN_WEBUI_SSH_BIND_HOST:-0.0.0.0}",
+            "vm_port": 22,
+            "publish_port": ${OPEN_WEBUI_SSH_HOST_PORT:-15021}
+          },
+          {
+            "bind_host": "${OPEN_WEBUI_BIND_HOST:-0.0.0.0}",
+            "vm_port": 8080,
+            "publish_port": ${OPEN_WEBUI_HOST_PORT:-15080}
+          }
+        ]
+      }
+    }
+  }
+}

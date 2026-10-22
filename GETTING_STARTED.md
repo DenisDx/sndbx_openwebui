@@ -19,7 +19,7 @@ docker build -t open-webui:latest .
 sudo ./prepare_host_permissions.sh
 ```
 
-Merge `config.sndbx.json5` into the root `sndbx` configuration, then start the
+Merge `sndbx.overlay.json5` into the root `sndbx` configuration, then start the
 `open-webui` sandbox. The template resolves its persistent paths through
 `SNDBX_ROOT`; use `OPEN_WEBUI_*` variables in the root `.env` for optional
 resource and port overrides.

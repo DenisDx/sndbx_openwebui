@@ -31,7 +31,7 @@ curl -s "http://127.0.0.1:<published-ui-port>/health"
 docker build -t open-webui:latest .
 ```
 
-Merge `config.sndbx.json5` into the root configuration, then start the
+Merge `sndbx.overlay.json5` into the root configuration, then start the
 `open-webui` sandbox with the normal sndbx operator command or UI. Use
 `OPEN_WEBUI_*` variables in the root `.env` for optional resource and port
 overrides.
